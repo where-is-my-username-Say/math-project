@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Foundation Math: Cycle 1</title>
+<style>
+:root{--w:min(84px,calc((100vw - 56px)/5));color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1000px 420px at 50% -10%,#16275a,transparent),#070c18;color:#e2e8f0;font:16px/1.5 "Segoe UI",Tahoma,sans-serif;min-height:100vh}
+main{max-width:640px;margin:0 auto;padding:12px 14px 330px}
+h1{font:700 22px/1.2 "Segoe UI",sans-serif;margin:0;background:linear-gradient(90deg,#23C4F8,#6ea8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:20px;margin:14px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.tag{font-size:13px;color:#94a3b8;margin:4px 0}
+button{font:inherit;cursor:pointer;color:inherit}
+*{-webkit-tap-highlight-color:transparent}button,label,.ans{outline:none}button:focus,button:focus-visible{outline:none}
+.container{direction:ltr;display:flex;justify-content:center;margin:14px 0}
+.tabs{--i:0;display:flex;position:relative;background:#0f172a;box-shadow:0 0 1px rgba(39,94,254,.5),0 6px 18px rgba(39,94,254,.25);padding:.75rem;border-radius:99px}
+.tabs *{z-index:2}
+.container input{display:none}
+.tab{position:relative;display:flex;align-items:center;justify-content:center;height:34px;width:var(--w);font-size:.72rem;color:#94a3b8;font-weight:600;border-radius:99px;cursor:pointer;transition:color .2s}
+.container input:checked+label{color:#fff}
+.notification{position:absolute;top:-2px;right:4px;min-width:.95rem;height:.95rem;font-size:10px;border-radius:99px;background:#f4c542;color:#14213d;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.glider{position:absolute;height:34px;width:var(--w);background:linear-gradient(135deg,#23C4F8,#275EFE);z-index:1;border-radius:99px;transition:transform .4s cubic-bezier(.23,1,.32,1);transform:translateX(calc(var(--i)*100%))}
+.page{animation:pg .5s cubic-bezier(.23,1,.32,1)}
+@keyframes pg{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chip{flex:none;border:1px solid #2a3a63;background:transparent;color:#cbd5e1;padding:6px 13px;border-radius:99px;font-size:14px;transition:all .25s}
+.chip:hover{border-color:#23C4F8}.chip.on{background:linear-gradient(135deg,#23C4F8,#275EFE);border-color:transparent;color:#fff}
+.box{background:#0b1428;border:1px solid #1e2a4a;border-radius:12px;padding:14px;margin:10px 0}
+.step{display:flex;gap:10px;align-items:center;margin:8px 0;animation:pg .5s both}
+.step i{flex:none;width:24px;height:24px;border-radius:50%;background:#275EFE;display:flex;align-items:center;justify-content:center;font-size:13px;font-style:normal}
+.vc{display:block;width:100%;text-align:start;background:#0b1428;border:1px solid #1e2a4a;border-radius:12px;padding:12px 14px;margin:7px 0;transition:border-color .25s,transform .25s}
+.vc:hover{border-color:#23C4F8;transform:translateY(-1px)}
+.back{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.23,1,.32,1)}.back>div{overflow:hidden}
+.vc.open .back{grid-template-rows:1fr}
+.checkbox-container{display:block;position:relative;padding-inline-start:35px;min-height:25px;line-height:25px;margin:8px 0;cursor:pointer;font-size:15px;user-select:none}
+.custom-checkbox{position:absolute;opacity:0;cursor:pointer;height:0;width:0}
+.checkmark{position:absolute;top:0;inset-inline-start:0;height:25px;width:25px;background-color:#1e2a4a;border-radius:4px;transition:background-color .3s;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+.checkmark:after{content:"";position:absolute;display:none;left:9px;top:5px;width:5px;height:10px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.custom-checkbox:checked~.checkmark{background-color:#2196F3;box-shadow:0 3px 7px rgba(33,150,243,.3)}
+.custom-checkbox:checked~.checkmark:after{display:block;animation:checkAnim .2s forwards}
+@keyframes checkAnim{0%{height:0}100%{height:10px}}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin-top:6px}
+.tabs.off .glider{opacity:0}.glider{transition:transform .4s cubic-bezier(.23,1,.32,1),opacity .3s}
+.inp{display:block;width:100%;background:#0b1428;border:1px solid #2a3a63;border-radius:10px;padding:10px;color:inherit;font:inherit;margin:6px 0}
+.prov{border:1px solid #1e2a4a;border-radius:10px;padding:10px;margin:10px 0}
+details summary{cursor:pointer}details ol{padding-inline-start:20px}
+.yours{margin:8px 0;font-size:18px}.hg{background:rgba(16,185,129,.2);color:#6ee7b7;padding:1px 7px;border-radius:6px}.hr{background:rgba(248,113,113,.2);color:#fca5a5;padding:1px 7px;border-radius:6px;text-decoration:underline wavy #f87171}
+.nt{border-color:#23C4F8}.mk{background:rgba(244,197,66,.25);color:#fde68a;padding:0 3px;border-radius:4px}
+.vh{display:flex;justify-content:space-between;align-items:center;gap:10px}.ar2{color:#6ea8ff;font-size:18px;direction:rtl}.wo .step i{background:#f4c542;color:#14213d}.wo{border-color:#5c4a14}.ar{direction:rtl;text-align:right;font-size:20px;color:#6ea8ff;margin-top:6px}
+.o{display:block;width:100%;text-align:start;margin:8px 0;padding:12px 14px;background:#0b1428;border:1px solid #2a3a63;border-radius:10px;transition:all .25s}
+.o:hover:not(:disabled){border-color:#23C4F8;transform:translateX(3px)}
+.o.ok{background:#065f46;border-color:#10b981}.o.no{background:#7f1d1d;border-color:#f87171}
+.hint{border-inline-start:4px solid #f4c542;padding:4px 10px;margin:10px 0;animation:pg .4s}
+.hint.g{border-color:#10b981}.hint.r{border-color:#f87171}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.card{position:relative;border-radius:12px;background:#020617;padding:16px;margin:10px 0;box-shadow:0 25px 50px -12px rgba(0,0,0,.6);transition:transform .3s,box-shadow .3s}
+.card:hover{transform:scale(1.02);box-shadow:0 25px 50px -12px rgba(99,102,241,.25)}
+.glow{position:absolute;inset:0;border-radius:12px;background:linear-gradient(90deg,#6366f1,#a855f7,#ec4899);opacity:.2;filter:blur(4px);transition:opacity .3s}
+.card:hover .glow{opacity:.35}
+.inset{position:absolute;inset:1px;border-radius:11px;background:#020617}
+.in{position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ic{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center}
+.live{display:flex;align-items:center;gap:5px;border-radius:99px;background:rgba(16,185,129,.1);color:#10b981;font-size:12px;padding:3px 9px}
+.live i{width:6px;height:6px;border-radius:50%;background:#10b981}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px;margin-bottom:14px}
+.sb{background:rgba(15,23,42,.6);border-radius:8px;padding:10px}.sb b{font-size:20px;display:block}.sb small{color:#10b981}
+.chart{height:96px;background:rgba(15,23,42,.6);border-radius:8px;padding:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:4px;margin-bottom:14px}
+.b{flex:1;max-width:28px;background:rgba(99,102,241,.3);border-radius:3px;display:flex;align-items:flex-end;transition:height .6s}.b i{display:block;width:100%;background:#6366f1;border-radius:3px;transition:height .6s}
+.bar{height:6px;background:#1e2a4a;border-radius:9px;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#23C4F8,#275EFE);border-radius:9px}
+.ans{direction:ltr;text-align:left;min-height:52px;font:600 24px/1.6 Georgia,serif;border:2px dashed #2a3a63;border-radius:10px;padding:6px 12px;margin:10px 0;color:#23C4F8;cursor:text}
+#kb{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#0b1428;border-top:1px solid #1e2a4a;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .4s cubic-bezier(.23,1,.32,1)}
+#kb.show{transform:none}
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:420px;margin:0 auto;direction:ltr}
+.k{padding:12px 0;border:0;border-radius:10px;background:#16213f;font-size:19px;transition:background .15s,transform .1s}.k:active{background:#275EFE;transform:scale(.94)}
+.k.w{grid-column:span 5;background:linear-gradient(135deg,#23C4F8,#275EFE);font-weight:600}
+.ab{position:relative;display:flex;align-items:center;gap:4px;padding:14px 34px;border:4px solid transparent;font-size:16px;background-color:transparent;border-radius:100px;font-weight:600;color:greenyellow;box-shadow:0 0 0 2px greenyellow;cursor:pointer;overflow:hidden;transition:all .6s cubic-bezier(.23,1,.32,1)}
+.ab svg{position:absolute;width:24px;fill:greenyellow;z-index:9;transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab .arr-1{right:16px}.ab .arr-2{left:-25%}
+.ab .circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;background-color:greenyellow;border-radius:50%;opacity:0;transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab .text{position:relative;z-index:1;transform:translateX(-12px);transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab:hover{box-shadow:0 0 0 12px transparent;color:#212121;border-radius:12px}
+.ab:hover .arr-1{right:-25%}.ab:hover .arr-2{left:16px}.ab:hover .text{transform:translateX(12px)}
+.ab:hover svg{fill:#212121}.ab:active{scale:.95;box-shadow:0 0 0 4px greenyellow}
+.ab:hover .circle{width:220px;height:220px;opacity:1}
+#ld{position:fixed;inset:0;z-index:99;background:#070c18;display:flex;align-items:center;justify-content:center;transition:opacity .6s}#ld.hide{opacity:0;pointer-events:none}
+.loader{--background:linear-gradient(135deg,#23C4F8,#275EFE);--shadow:rgba(39,94,254,.28);--text:#9aa7c2;--page:rgba(255,255,255,.36);--page-fold:rgba(255,255,255,.52);--duration:3s;width:200px;height:140px;position:relative;direction:ltr}
+.loader:before,.loader:after{--r:-6deg;content:"";position:absolute;bottom:8px;width:120px;top:80%;box-shadow:0 16px 12px var(--shadow);transform:rotate(var(--r))}
+.loader:before{left:4px}.loader:after{--r:6deg;right:4px}
+.loader div{width:100%;height:100%;border-radius:13px;position:relative;z-index:1;perspective:600px;box-shadow:0 4px 6px var(--shadow);background-image:var(--background)}
+.loader div ul{margin:0;padding:0;list-style:none;position:relative}
+.loader div ul li{--r:180deg;--o:0;--c:var(--page);position:absolute;top:10px;left:10px;transform-origin:100% 50%;color:var(--c);opacity:var(--o);transform:rotateY(var(--r));animation:var(--duration) ease infinite}
+.loader div ul li:nth-child(2){--c:var(--page-fold);animation-name:page-2}.loader div ul li:nth-child(3){--c:var(--page-fold);animation-name:page-3}
+.loader div ul li:nth-child(4){--c:var(--page-fold);animation-name:page-4}.loader div ul li:nth-child(5){--c:var(--page-fold);animation-name:page-5}
+.loader div ul li svg{width:90px;height:120px;display:block}
+.loader div ul li:first-child{--r:0deg;--o:1}.loader div ul li:last-child{--o:1}
+.loader span{display:block;left:0;right:0;top:100%;margin-top:20px;text-align:center;color:var(--text)}
+@keyframes page-2{0%{transform:rotateY(180deg);opacity:0}20%{opacity:1}35%,100%{opacity:0}50%,100%{transform:rotateY(0deg)}}
+@keyframes page-3{15%{transform:rotateY(180deg);opacity:0}35%{opacity:1}50%,100%{opacity:0}65%,100%{transform:rotateY(0deg)}}
+@keyframes page-4{30%{transform:rotateY(180deg);opacity:0}50%{opacity:1}65%,100%{opacity:0}80%,100%{transform:rotateY(0deg)}}
+@keyframes page-5{45%{transform:rotateY(180deg);opacity:0}65%{opacity:1}80%,100%{opacity:0}95%,100%{transform:rotateY(0deg)}}
+@media(prefers-reduced-motion:reduce){.page,.step,.hint{animation:none}}
+</style></head><body><main id="app"></main><div id="kb"></div><div id="ld"></div>
+<script>
+const U=[["1.1","Real Numbers","الأعداد الحقيقية"],["1.2","Exponents","الأسس"],["1.3","Algebraic Expressions","التعبيرات الجبرية"],["1.4","Rational Expressions","الصيغ الجبرية النسبية"],["1.5","Equations","المعادلات"],["1.6","Modeling with Equations","التطبيقات على المعادلات"],["1.7","Inequalities","المتباينات"],["1.8","Coordinate Geometry","الهندسة الإحداثية"],["1.9","Page missing","بانتظار الصفحة"],["1.10","Lines","المستقيمات"],["R","Mixed Review","مراجعة عامة"]];
+// part = [type, title, content]. i idea, t terms, h tips, w watch out, x worked example, c check yourself
+const GD={
+"1.1":[
+["i","The big idea","Number sets sit inside each other, like boxes. Natural numbers are inside whole numbers, whole numbers are inside integers, and integers are inside rational numbers. Rational and irrational numbers together make up the real numbers."],
+["t","Number sets",["Natural numbers^الأعداد الطبيعية^The counting numbers. They start at 1.^1, 2, 3","Odd natural numbers^الأعداد الفردية^Natural numbers that cannot be split into two equal groups.^1, 3, 5, 7","Even natural numbers^الأعداد الزوجية^Natural numbers that can be divided by 2 with nothing left over.^2, 4, 6, 8","Whole numbers^الأعداد الكلية^The natural numbers plus 0.^0, 1, 2, 3","Integers^الأعداد الصحيحة^Whole numbers and their negatives.^−2, −1, 0, 1, 2","Rational numbers^الأعداد النسبية^Any number that can be written as P/Q, where P and Q are integers and Q is not 0.^2/3, 1/5, 7/8","Irrational numbers^الأعداد غير النسبية^Numbers that cannot be written as P/Q. Their decimals never end and never repeat.^√2, π, e","Real numbers^الأعداد الحقيقية^All the rational and irrational numbers together.^every number above"]],
+["w","Watch out",["On your sheet, natural numbers start at 1 and whole numbers start at 0. So 0 is whole, but not natural.","−3 is an integer, but it is not a whole number.","Not every root is irrational. √2 is irrational, but √4 = 2 is rational."]],
+["c","Check yourself",["Is −3 a whole number?^No. It is an integer.","Is 0.5 rational?^Yes. It equals 1/2.","Which one is irrational: 3/4, π or 0?^π."]],
+["t","Operations and fractions",["Addition^الجمع^Finding the total of two or more numbers.^2 + 3 = 5","Subtraction^الطرح^Taking one amount away from another.^6 − 2 = 4","Multiplication^الضرب^Shows how many times a number is added to itself.^3 × 4 = 12","Division^القسمة^Shows how many times one number fits inside another.^16 ÷ 2 = 8","Denominator^المقام^The bottom number of a fraction. It can never be 0.^in 1/3 the denominator is 3","Reciprocal^قلب الكسر (مقلوب)^The number you multiply by to get 1. Just flip the fraction.^the reciprocal of 4/5 is 5/4","Simplify^التبسيط^Rewrite something in its simplest form without changing its value.^3/12 ⇒ 1/4"]],
+["h","Think like this",["A denominator can never be 0, because you cannot share something into 0 groups.","Zero has no reciprocal, because nothing times 0 gives 1.","To find the reciprocal of a whole number, write it as a fraction first: 7 = 7/1, so its reciprocal is 1/7."]],
+["c","Check yourself",["What is the reciprocal of 7?^1/7.","Simplify 6/18.^1/3."]],
+["t","Sets, intervals and absolute value",["Sets^المجموعات^A well-defined collection of objects or numbers.^S = {1, 2, 3, 6}","Empty set^المجموعة الخالية^A set with no elements. Written { } or φ.^φ","Union of sets (∪)^اتحاد المجموعات^Everything that is in either set. A shared element is written once.^S ∪ B = {1, 2, 3, 4, 5, 6}","Intersection of sets (∩)^تقاطع المجموعات^Only the elements that both sets share.^S ∩ B = {6}","Intervals^الفترات^A connected piece of the number line. A square bracket [ ] includes the end, a round bracket ( ) leaves it out.^[2, 3]","Absolute value^القيمة المطلقة^The distance of a number from zero. It is never negative.^|−2| = 2"]],
+["x","Worked example: sets","Let S = {1, 2, 3, 6} and B = {4, 5, 6}. → Union: list everything from both sets, and write 6 only once. → S ∪ B = {1, 2, 3, 4, 5, 6} → Intersection: keep only what is in both sets. → S ∩ B = {6}"],
+["c","Check yourself",["Find {1, 2} ∪ {2, 3}.^{1, 2, 3}.","Find {1, 2} ∩ {3, 4}.^φ, the empty set. They share nothing.","Evaluate |−7| and |7|.^Both are 7."]]],
+"1.2":[
+["i","The big idea","An exponent is a short way to write repeated multiplication. The big number is the base. The small raised number is the exponent, and it tells you how many times to multiply the base by itself."],
+["t","Key words",["Exponents / power^الأس^How many times the base multiplies itself.^2³ = 8","Exponential form^الصيغة الأسية^An expression written as aⁿ, where a is the base and n is the exponent.^5³ = 5 × 5 × 5","Evaluate^أوجد الناتج^Find the value.^1 + 6 = 7","Eliminate^الشطب أو حذف المتشابه^Remove a common factor from the top and the bottom.^ab/ac = b/c","Eliminate negative power^حذف الأس السالب^Take the reciprocal so that the exponent becomes positive.^a⁻² ⇒ 1/a²  and  1/a⁻² ⇒ a²"]],
+["x","Worked example: evaluate","Evaluate 2³. → The base is 2 and the exponent is 3. → Multiply 2 three times: 2 × 2 × 2. → 2³ = 8"],
+["x","Worked example: negative power","Write 2⁻³ with a positive exponent. → A negative exponent means take the reciprocal. → 2⁻³ = 1/2³ → 1/2³ = 1/8"],
+["w","Watch out",["2³ is not 2 × 3. It is 2 × 2 × 2 = 8.","A negative exponent does not make the answer negative. 2⁻¹ = 1/2.","Eliminate only works on factors that are multiplied, not on terms that are added. In (a + b)/a you cannot cancel the a’s."]],
+["c","Check yourself",["Evaluate 3⁴.^81.","Write 2⁻³ with a positive exponent.^1/2³ = 1/8.","Simplify 1/x⁻⁵.^x⁵."]]],
+"1.3":[
+["i","The big idea","An algebraic expression is built from numbers and letters joined by + − × ÷. We will use 3x² − 5 as our running example and name every piece of it."],
+["t","Building blocks",["Variables^المتغيرات^A symbol that can take different numerical values.^x, y, z","Constant^الثوابت^A symbol or number with a fixed value.^−5, 6, 0","Algebraic expression^التعبير الجبري^Constants and variables joined by some of + − × ÷.^3x² − 5","Terms^الحدود الجبرية^The parts of an expression separated by + or −.^3x²  and  −5","Coefficient^المعامل^The number that multiplies the variable.^in 4x the coefficient is 4","Constant term^الحد الثابت^The term that has no variable.^in 3x² − 5 it is −5"]],
+["h","Think like this",["The sign belongs to the term. In 3x² − 5 the second term is −5, not 5.","In 5x the coefficient is 5. In x alone the coefficient is 1.","Variables are the changing part. Constants never change."]],
+["t","Types of expressions",["Like terms^الحدود المتشابهة^Terms with the same variable and the same power.^3x², 5x², x²","Unlike terms^الحدود غير المتشابهة^Terms where the variable or the power is different.^3xy, 3x, y, x³","Monomial^أحادي الحد^An expression with one term.^5x","Binomial^ثنائي الحدود^An expression with two terms.^3x + 2","Trinomial^ثلاثي الحدود^An expression with three terms.^x² + 4x + 1","Polynomial^متعدد الحدود^A sum of monomials. It can have many terms.^aₙxⁿ + … + a₁x + a₀","Degree of a polynomial^درجة الحد^The highest power of the variable.^5x³ − 2x + 4 has degree 3"]],
+["w","Watch out",["A polynomial can have any number of terms. Monomials and binomials are polynomials too.","Terms are like only if both the variable and the power match. 4x² and 4x³ are not like.","When you add like terms, add the coefficients and keep the power: 3x² + 5x² = 8x², not 8x⁴."]],
+["c","Check yourself",["Are 4x² and 7x² like terms? Are 4x² and 4x³?^Yes. No, the powers are different.","What is the degree of 2x⁴ − x + 9?^4.","Name x² + 4x + 1 by its number of terms.^Trinomial."]]],
+"1.4":[
+["i","The big idea","Identities and factoring let you rewrite an expression in a different shape without changing its value. A rational expression is a fraction made from polynomials, and you can often make it simpler."],
+["t","Identities and factoring",["Algebraic identities^المتطابقات الجبرية^An equation that is true for every possible value of its variables.^(a + b)(a − b) = a² − b²","Factorization^التحليل (إيجاد الأقواس)^Write an expression as a product of simpler expressions.^x² + x − 6 = (x − 2)(x + 3)","Sum^الجمع^The result of adding.^3 + 2","Product^حاصل الضرب^The result of multiplying.^3 × 2"]],
+["h","Identities to know",["(a + b)² = a² + 2ab + b²","(a − b)² = a² − 2ab + b²","(a + b)(a − b) = a² − b²"]],
+["x","Worked example: factoring","Factor x² + x − 6. → Find two numbers that multiply to −6 and add to 1. → They are 3 and −2. → x² + x − 6 = (x − 2)(x + 3)"],
+["t","Rational expressions",["Rational expressions^الصيغة الجبرية النسبية^An expression written as P/Q, where P and Q are polynomials and Q is not 0.^(3 + x)/(2x − 4)","Lowest form^الصيغة المبسطة (التبسيط)^A fraction whose top and bottom share no common factor except 1.^(x² − 4)/(x + 2) ⇒ x − 2"]],
+["x","Worked example: lowest form","Simplify (x² − 4)/(x + 2). → Factor the top: x² − 4 = (x − 2)(x + 2). → Cancel the common factor (x + 2). → The answer is x − 2, as long as x is not −2."],
+["w","Watch out",["Sum and product are answers, not instructions. “The product of 3 and 2” means 3 × 2 = 6.","Cancel factors, never terms. You can cancel (x + 2) from top and bottom, but not the x in x + 2.","Remember the restriction: the denominator can never be 0."]],
+["c","Check yourself",["Expand (x + 3)².^x² + 6x + 9.","Factor x² − 9.^(x − 3)(x + 3).","Put (x² − 1)/(x − 1) in lowest form.^x + 1."]]],
+"1.5":[
+["i","The big idea","An equation says that two expressions have the same value. To solve it, you find the value of the variable that makes it true. The golden rule: whatever you do to one side, do to the other."],
+["t","Types of equations",["Equation^المعادلات^A statement that two mathematical expressions have the same value.^2x² − 1 = 7","Linear equation^المعادلة الخطية^An equation of degree 1.^4x − 1 = 3","Solution / root^الحل^The value of the variable that makes the equation true.^3x + 1 = 7 ⇒ x = 2","Solve^أوجد الحل / أوجد قيمة المتغير^Find the value of the variable.^x = ?","Non-linear equation^معادلة غير خطية^An equation whose degree is not 1.^x² + 2x − 1 = 2"]],
+["x","Worked example: linear","Solve 3x + 1 = 7. → Subtract 1 from both sides: 3x = 6. → Divide both sides by 3: x = 2. → Check: 3(2) + 1 = 7 ✓"],
+["t","Tools for solving",["Cross multiplication^الضرب التبادلي^For a/b = c/d, write ad = bc.^2x/3 = 1/5 ⇒ 10x = 3","Quadratic equation^معادلة تربيعية^An equation of degree 2.^x² + 5x = 6","Standard form^الصيغة العامة للمعادلة التربيعية^The quadratic written with everything on one side and 0 on the other.^ax² + bx + c = 0","Formula^قانون^A general rule that uses symbols to relate quantities.^y = mx + b","Discriminant^المميز^The number D = b² − 4ac. It tells you how many real solutions a quadratic has.^D = b² − 4ac"]],
+["x","Worked example: cross multiplication","Solve 2x/3 = 1/5. → Cross multiply: 2x × 5 = 3 × 1. → 10x = 3 → x = 3/10"],
+["h","Think like this",["“Solve” always means find the variable. “Solution” and “root” mean the answer.","Move everything to one side first. x² + 5x = 6 becomes x² + 5x − 6 = 0, so a = 1, b = 5, c = −6.","If D > 0 there are two different real solutions. If D = 0 there is one repeated solution. If D < 0 there are no real solutions."]],
+["c","Check yourself",["Solve 3x + 2 = 11.^x = 3.","Cross multiply x/4 = 3/2.^2x = 12, so x = 6.","Find D for x² + 5x − 6 = 0.^25 + 24 = 49."]]],
+"1.6":[
+["i","The big idea","The skill here is turning English into algebra. Read the sentence slowly, name the unknown number x, then write each phrase as maths."],
+["t","Translation words",["Modeling with equations^التطبيقات العملية على المعادلات^Translate a word problem into algebraic symbols.^","Construct the equation^تكوين معادلة^Build the equation from the words.^","Consecutive numbers^أعداد متتالية^Integers that follow each other with none skipped.^n, n + 1, n + 2","Twice^ضعف العدد^Two times the number.^twice 3 = 6, so 2n","Thrice^ثلاثة أضعاف العدد^Three times the number.^thrice 4 = 12, so 3n","Times^ضرب العدد^Multiply by.^","Half^نصف العدد^The number divided by 2.^half of 8 = 4, so n/2","More than^أكبر من^Greater than.^7 > 3","Less than^أصغر من^Smaller than.^1 < 5","Difference^الفرق^The result of subtracting two quantities.^difference of 5 and 3 = 5 − 3 = 2"]],
+["w","Watch out: order of words",["“7 more than x” is x + 7.","“7 less than x” is x − 7, not 7 − x.","“The difference between 5 and 3” is 5 − 3 = 2: bigger minus smaller.","“More than” can compare (x is more than 3) or add (3 more than x). Read the sentence both ways."]],
+["t","Rectangle words",["Rectangle^مستطيل^A four-sided shape with four right angles. Opposite sides are equal and parallel.^","Length^الطول^The measurement of the longer side.^","Width^العرض^The measurement of the shorter side.^","Area^المساحة^The space a shape covers. For a rectangle: length × width.^length × width"]],
+["x","Worked example: rectangle","The length of a rectangle is 3 more than its width. The area is 40. → Let the width be w. Then the length is w + 3. → Construct the equation: w(w + 3) = 40. → Standard form: w² + 3w − 40 = 0. → Factor: (w + 8)(w − 5) = 0, so w = 5. A width cannot be negative. → The length is 8. Check: 5 × 8 = 40 ✓"],
+["c","Check yourself",["Write “twice a number plus 3 equals 11” and solve it.^2n + 3 = 11, so n = 4.","Three consecutive numbers add to 24. Find them.^n + (n + 1) + (n + 2) = 24, so 7, 8, 9."]]],
+"1.7":[
+["i","The big idea","An inequality compares two values that are not equal. You solve it almost exactly like an equation, with one extra rule about negative numbers."],
+["t","Types of inequalities",["Inequalities^المتباينة^A statement comparing two values using <, >, ≤ or ≥.^x ≤ 3","Linear inequality^المتباينة الخطية^An inequality of degree 1.^3x − 1 ≤ 5","Compound inequality^المتباينة المركبة^Two inequalities combined in one statement.^2 ≤ x ≤ 5","Quadratic inequality^المتباينة التربيعية^An inequality of degree 2.^x² + 2x ≤ 4"]],
+["h","Think like this",["Solve like an equation. The extra rule: when you multiply or divide by a negative number, flip the sign.","≤ and ≥ include the end value. < and > do not. This links to the brackets in intervals.","Read 2 ≤ x ≤ 5 as “x is between 2 and 5, including both”."]],
+["x","Worked example: flipping the sign","Solve −2x < 6. → Divide both sides by −2. → Dividing by a negative flips the sign. → x > −3"],
+["c","Check yourself",["Solve 3x − 1 ≤ 5.^x ≤ 2.","Solve −x > 4.^x < −4.","Is 5 a solution of 2 ≤ x ≤ 5?^Yes, because 5 is included."]]],
+"1.8":[
+["i","The big idea","The coordinate plane is a map made from two number lines that cross. Every point on it has an address (x, y): go along first, then up or down."],
+["t","The plane",["Coordinate plane^المستوى الاحداثي (الرسم البياني)^A plane with a vertical line and a horizontal line that cross at 0.^","Vertical number line / y-axis^خط الأعداد العمودي (الاحداثي الصادي)^The up-and-down line, with numbers at equal steps.^","Horizontal number line / x-axis^خط الأعداد الأفقي (الاحداثي السيني)^The left-to-right line, with numbers at equal steps.^","Origin^نقطة الأصل^The point where the two axes meet.^(0, 0)","Coordinates of a point^احداثي النقطة^The pair P(x, y) that gives the point’s position.^(2, 3)","To plot points^رسم النقاط^Mark the position of the points on the plane.^","Quadrants^الأرباع في المستوى الاحداثي^The four regions the axes make.^first, second, third, fourth"]],
+["h","Think like this",["Quadrant I is (+, +). Quadrant II is (−, +). Quadrant III is (−, −). Quadrant IV is (+, −).","Always write coordinates as (x, y): the x value comes first.","The origin is (0, 0), where x and y are both 0."]],
+["t","Measuring on the plane",["Distance formula^قانون المسافة^The formula used to find the distance between two points.^","Closer^اقرب الى^Nearer. Compare two distances and pick the smaller.^","Midpoint formula^قانون نقطة المنتصف^The formula used to find the middle point of two points.^","Line segment^القطعة المستقيمة^A part of a line with two fixed endpoints.^","End points of a line^نقاط البداية والنهاية^The two extreme points of a segment.^"]],
+["h","Formulas",["Distance: d = √[(x₂ − x₁)² + (y₂ − y₁)²]","Midpoint: ((x₁ + x₂)/2 , (y₁ + y₂)/2)"]],
+["x","Worked example: midpoint","Find the midpoint of (2, 4) and (6, 8). → Average the x values: (2 + 6)/2 = 4. → Average the y values: (4 + 8)/2 = 6. → The midpoint is (4, 6)."],
+["x","Worked example: distance","Find the distance from (0, 0) to (3, 4). → Differences: 3 − 0 = 3 and 4 − 0 = 4. → d = √(3² + 4²) = √(9 + 16). → d = √25 = 5"],
+["w","Watch out",["Distance is a length, so it is never negative.","A midpoint is a point, so it has two coordinates, not one number.","Do not swap x and y when you plot."]],
+["c","Check yourself",["In which quadrant is (−3, 4)?^Quadrant II.","Midpoint of (2, 4) and (6, 8)?^(4, 6).","Distance from (0, 0) to (3, 4)?^5."]]],
+"1.10":[
+["i","The big idea","A straight line is the graph of a linear equation y = mx + b. The number m is the slope, which tells you how steep the line is. The number b is the y-intercept, where the line crosses the y-axis."],
+["t","Key words",["Line^الخط^The graph of a linear equation y = mx + b.^y = 2x + 3","Slope of a line^ميل الخط^Measures how steep the line is: m = (y₂ − y₁)/(x₂ − x₁).^m = 2","Steepness^شدة الانحدار^How sharply the line rises or falls as you move left to right. A bigger |m| means steeper.^","Undefined^الميل غير معرف^An expression with no meaningful or valid result.^vertical line"]],
+["h","Think like this",["In y = 2x + 3 the slope is 2 (up 2 for every 1 across) and the y-intercept is 3 (the line crosses at (0, 3)).","A positive slope rises. A negative slope falls. A horizontal line has slope 0.","A vertical line has an undefined slope, because the denominator x₂ − x₁ would be 0."]],
+["x","Worked example: slope","Find the slope through (1, 2) and (3, 8). → m = (y₂ − y₁)/(x₂ − x₁) → m = (8 − 2)/(3 − 1) = 6/2 → m = 3"],
+["w","Watch out",["Subtract in the same order on top and bottom: y₂ − y₁ over x₂ − x₁.","The slope of x = 4 is undefined, not 0. Both points have the same x, so the denominator is 0. This links back to “a denominator can never be 0”."]],
+["c","Check yourself",["Slope and y-intercept of y = −3x + 5?^Slope −3, y-intercept 5.","Slope through (1, 2) and (3, 8)?^3.","Why is the slope of x = 4 undefined?^Both points have the same x, so the denominator is 0."]]],
+"R":[
+["i","Mixed review","Time to put everything together. Tap each question, think first, then check the answer."],
+["c","Match the term",["The bottom number of a fraction.^Denominator.","Parts of an expression separated by + or −.^Terms.","The highest power in a polynomial.^Degree.","The values that make an equation true.^Solutions, or roots.","Where the axes meet.^The origin.","How steep a line is.^Slope."]],
+["c","Short problems",["Simplify 6/18.^1/3.","Evaluate 2⁵.^32.","Factor x² + 5x + 6.^(x + 2)(x + 3).","Solve x² − 4 = 0.^x = 2 or x = −2.","Solve 2x + 1 < 9.^x < 4.","Four more than three times a number is 19. Find the number.^3n + 4 = 19, so n = 5."]]]
+};
+// [unit, skill, question, options, answer index, hint 1, hint 2, solution]
+const Q=[
+["1.1","Number types","Which number is irrational?",["1/3","√2","0.5","−4"],1,"Rational means it can be written as P/Q.","Which one cannot be a fraction of integers?","√2 cannot be written as P/Q, so it is irrational."],
+["1.1","Absolute value","|−7| = ?",["−7","0","7","1/7"],2,"Absolute value is a distance from zero.","A distance is never negative.","|−7| = 7."],
+["1.1","Sets","S={1,2,3,6} and B={4,5,6}. S∩B = ?",["{6}","{1,2,3,4,5,6}","∅","{4,5}"],0,"Intersection means common elements.","Which element is in both sets?","Only 6 is in both."],
+["1.2","Negative power","2⁻³ = ?",["−8","1/8","−6","8"],1,"A negative power means take the reciprocal.","2⁻³ = 1/2³","1/2³ = 1/8."],
+["1.2","Exponent rules","3² × 3³ = ?",["3⁵","9⁵","3⁶","6⁵"],0,"Same base: add the powers.","2 + 3 = 5","3² × 3³ = 3⁵."],
+["1.3","Degree","What is the degree of 5x³−2x+4?",["1","3","4","5"],1,"The degree is the highest power.","Compare the powers 3, 1 and 0.","The highest power is 3."],
+["1.3","Factorization","Factor x²−9",["(x−3)²","(x−3)(x+3)","(x+9)(x−1)","x(x−9)"],1,"This is a difference of squares.","a²−b² = (a+b)(a−b) with b = 3.","x²−9 = (x−3)(x+3)."],
+["1.3","Like terms","Simplify 3x²+5x²",["8x⁴","8x²","15x²","8x"],1,"Like terms: add the coefficients.","3 + 5 = 8","The power stays the same: 8x²."],
+["1.4","Lowest form","Simplify (x²−4)/(x+2)",["x−2","x+2","x²−2","1"],0,"Factor the top first.","x²−4 = (x−2)(x+2)","Cancel (x+2) to get x−2."],
+["1.4","Undefined value","Which x is not allowed in 3/(2x−4)?",["0","1","2","4"],2,"The denominator cannot be 0.","Solve 2x−4 = 0.","x = 2 makes the denominator 0."],
+["1.5","Linear equations","Solve 4x−1=3",["x=1","x=2","x=½","x=−1"],0,"Get x alone.","Add 1 to both sides: 4x = 4.","x = 1."],
+["1.5","Cross multiplication","Solve 2x/3 = 1/5",["x=3/10","x=10/3","x=2/15","x=6/5"],0,"Multiply across the equals sign.","2x·5 = 1·3, so 10x = 3.","x = 3/10."],
+["1.5","Discriminant","Find D for x²+5x−6=0",["49","1","−11","25"],0,"D = b²−4ac.","a=1, b=5, c=−6.","D = 25 + 24 = 49."],
+["1.6","Consecutive numbers","Two consecutive numbers add up to 15. What is the smaller one?",["6","7","8","5"],1,"Call them n and n+1.","n + (n+1) = 15, so 2n+1 = 15.","n = 7."],
+["1.6","Twice","Twice a number plus 3 equals 11. Find the number.",["3","4","5","7"],1,"Write it as an equation: 2x+3=11.","Subtract 3: 2x = 8.","x = 4."],
+["1.7","Linear inequalities","Solve 3x−1 ≤ 5",["x ≤ 2","x ≥ 2","x ≤ 4","x ≤ 1"],0,"Solve it like an equation.","Add 1: 3x ≤ 6.","Divide by 3: x ≤ 2."],
+["1.7","Compound inequalities","Which value satisfies 2 ≤ x ≤ 5?",["1","6","2","5.5"],2,"x must be between 2 and 5, ends included.","Test each option.","2 is included, so x = 2 works."],
+["1.8","Midpoint","Midpoint of (2,4) and (6,8)?",["(4,6)","(8,12)","(3,5)","(2,2)"],0,"Average the x values and the y values.","(2+6)/2 and (4+8)/2.","The midpoint is (4,6)."],
+["1.8","Quadrants","In which quadrant is (−3,2)?",["I","II","III","IV"],1,"x is negative and y is positive.","Quadrant I is (+,+); go counter-clockwise.","Quadrant II."],
+["1.8","Distance","Distance from (0,0) to (3,4)?",["5","7","25","1"],0,"d = √(Δx² + Δy²).","√(9 + 16)","d = 5."],
+["1.10","Slope","What is the slope of y=2x+3?",["3","2","−2","5"],1,"In y = mx + b, m is the slope.","Read the number multiplying x.","The slope is 2."],
+["1.10","Slope formula","Slope through (1,2) and (3,6)?",["2","4","½","1"],0,"m = Δy / Δx.","(6−2)/(3−1)","4/2 = 2."],
+["1.10","Undefined slope","A vertical line has a slope that is…",["0","1","undefined","−1"],2,"For a vertical line, Δx = 0.","You cannot divide by 0.","The slope is undefined."]
+];
+const TT={en:{set:'Settings',lang:'Language',topics:'Topics to generate',expl:'Explain with AI',auto:'Explain my mistakes automatically',bi:'Use built-in Claude as a backup',aiinfo:'Add one or more AI providers. They are tried in order until one answers. Keys stay on this device only.',addp:'Add provider',setai:'Set up AI in Settings',yours:'Your answer',right:'Correct answer',thinking:'Thinking…',part:'Part',of:'of',back:'Back',prac2:'Practice this unit',tapq:'Tap to see the answer',tapt:'Tap a term to see its meaning',learn:'Learn',prac:'Practice',gen:'Generator',bank:'Bank',stat:'Status',next:'Next',check:'Check',start:'Start practice',quiz:'Timed quiz',new:'New question',hint:['Hint 1: the idea','Hint 2: first step','Show full solution'],ok:'Correct.',no:'Not quite.',tap:'Tap a card to show the Arabic.',skill:'Skill',rule:'Rule',ex:'Worked example',rev:'Review due',wk:'Weak skills',none:'No weak skills yet.',st:'Student status',ans:'Answered',acc:'Accuracy',det:'View details',d7:'Last 7 days',res:'Result',home:'Back',quit:'Quit'},
+ar:{set:'الإعدادات',lang:'اللغة',topics:'مواضيع الأسئلة',expl:'اشرح بالذكاء الاصطناعي',auto:'اشرح أخطائي تلقائياً',bi:'استخدم Claude المدمج كبديل',aiinfo:'أضف مزوّداً واحداً أو أكثر. تتم تجربتها بالترتيب حتى يجيب أحدها. المفاتيح تبقى على جهازك فقط.',addp:'إضافة مزوّد',setai:'فعّل الذكاء الاصطناعي من الإعدادات',yours:'إجابتك',right:'الإجابة الصحيحة',thinking:'جارٍ التفكير…',part:'الجزء',of:'من',back:'رجوع',prac2:'تدرّب على الوحدة',tapq:'اضغط لرؤية الإجابة',tapt:'اضغط على المصطلح لرؤية معناه',learn:'تعلّم',prac:'تدريب',gen:'مولّد',bank:'الأخطاء',stat:'مستواي',next:'التالي',check:'تحقق',start:'ابدأ التدريب',quiz:'اختبار بوقت',new:'سؤال جديد',hint:['تلميح 1: الفكرة','تلميح 2: الخطوة الأولى','أظهر الحل'],ok:'صحيح.',no:'ليس تماماً.',tap:'اضغط البطاقة لإظهار العربية.',skill:'المهارة',rule:'القاعدة',ex:'مثال محلول',rev:'راجع المستحقة',wk:'المهارات الضعيفة',none:'لا توجد مهارات ضعيفة.',st:'حالة الطالب',ans:'أجبت',acc:'الدقة',det:'التفاصيل',d7:'آخر 7 أيام',res:'النتيجة',home:'رجوع',quit:'خروج'}};
+const $=s=>document.querySelector(s),A=$('#app'),DAY=864e5,TABS=['learn','prac','gen','bank','stat'];
+let S=null;try{S=JSON.parse(localStorage.getItem('fm'))}catch(e){}
+S=Object.assign({m:{},d:{},log:{},w:{},lang:'en',gt:['lin','quad','cross','slope','exp','mid','dist'],ai:[],auto:false,bi:true},S||{});
+const save=()=>{try{localStorage.setItem('fm',JSON.stringify(S))}catch(e){}};
+const t=k=>TT[S.lang][k],ids=u=>Q.map((q,i)=>q[0]==u?i:-1).filter(i=>i>=0),due=()=>Object.keys(S.m).filter(i=>!S.m[i].ok&&S.m[i].due<=Date.now()).map(Number);
+const AR="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z";
+const btn=(x,fn)=>`<button class="ab" onclick="${fn}"><svg viewBox="0 0 24 24" class="arr-2"><path d="${AR}"/></svg><span class="text">${x}</span><span class="circle"></span><svg viewBox="0 0 24 24" class="arr-1"><path d="${AR}"/></svg></button>`;
+const put=h=>{$('#v').innerHTML='<div class="page">'+h+'</div>'};
+let AIC='',lp=0,cur=0,uc='1.5',R=null,T=null,gs='lin',G=null,ans='',gh=0,gdone=null;
+function rec(sk,ok){const d=new Date().toISOString().slice(0,10),l=S.log[d]=S.log[d]||[0,0];l[0]++;if(ok){l[1]++;S.w[sk]=Math.max(0,(S.w[sk]||0)-1)}else S.w[sk]=(S.w[sk]||0)+1;save()}
+function shell(){document.documentElement.dir=S.lang=='ar'?'rtl':'ltr';
+ A.innerHTML=`<div class="top"><h1>Foundation Math</h1><button class="chip" onclick="openSet()" aria-label="Settings">⚙ ${t('set')}</button></div><div class="container"><div class="tabs">${TABS.map((k,i)=>`<input type="radio" id="r${i}" name="tabs" ${i==cur?'checked':''} onchange="go(${i})"><label class="tab" for="r${i}">${t(k)}${k=='bank'?`<span class="notification" id="nb">${due().length}</span>`:''}</label>`).join('')}<span class="glider"></span></div></div><div id="v"></div>`;go(cur)}
+function go(i){clearInterval(T);cur=i;$('.tabs').classList.remove('off');$('.tabs').style.setProperty('--i',i);$('#r'+i).checked=true;$('#kb').classList.toggle('show',i==2&&gdone==null);const n=$('#nb');if(n)n.textContent=due().length;put([learn,prac,gen,bank,stat][i]())}
+const chips=()=>`<div class="chips">${U.map(u=>`<button class="chip ${u[0]==uc?'on':''}" onclick="uc='${u[0]}';lp=0;go(cur)">${u[0]}</button>`).join('')}</div>`;
+function part(p){const[k,ti,c]=p;let h=`<h2>${ti}</h2>`;
+ if(k=='i')h+=`<div class="box" dir="auto">${c}</div>`;
+ else if(k=='t')h+=`<p class="tag">${t('tapt')}</p>`+c.map(v=>{const[e,a,m,x]=v.split('^');return `<button class="vc" onclick="this.classList.toggle('open')"><div class="vh"><b dir="ltr">${e}</b><span class="ar2">${a}</span></div><div class="back"><div><p dir="auto" style="margin:8px 0 4px">${m}</p>${x?`<div class="tag" dir="ltr">e.g. ${x}</div>`:''}</div></div></button>`}).join('');
+ else if(k=='c')h+=`<p class="tag">${t('tapq')}</p>`+c.map(v=>{const[q,a]=v.split('^');return `<button class="vc" onclick="this.classList.toggle('open')"><span dir="auto">${q}</span><div class="back"><div><div class="hint g" dir="auto">${a}</div></div></div></button>`}).join('');
+ else{const l=k=='x'?c.split('→').map(s=>s.trim()):c;h+=`<div class="box ${k=='w'?'wo':''}">${l.map((s,i)=>`<div class="step" style="animation-delay:${i*.12}s"><i>${k=='x'?i+1:k=='w'?'!':'•'}</i><span dir="auto">${s}</span></div>`).join('')}</div>`}
+ return h}
+function learn(){const u=U.find(x=>x[0]==uc),P=GD[uc];let h=chips()+`<h2>${uc} ${S.lang=='ar'?u[2]:u[1]}</h2>`;
+ if(!P)return h+'<div class="box">This unit is waiting for its page.</div>';
+ lp=Math.min(lp,P.length-1);const last=lp==P.length-1;
+ h+=`<p class="tag">${t('part')} ${lp+1} ${t('of')} ${P.length}</p><div class="bar"><i style="width:${(lp+1)*100/P.length}%"></i></div>`+part(P[lp]);
+ return h+`<div class="row">${lp?`<button class="chip" onclick="lp--;go(0);scrollTo(0,0)">${t('back')}</button>`:''}${last?btn(t('prac2'),'lp=0;go(1);scrollTo(0,0)'):btn(t('next'),'lp++;go(0);scrollTo(0,0)')}</div>`}
+function prac(){const n=ids(uc).length;return chips()+`<h2>${uc}</h2><p class="tag">${n} questions</p><div class="row">${n?btn(t('start'),`run(ids('${uc}'),'${uc}')`):''}${btn(t('quiz'),'exam()')}</div>`}
+function run(l,title,sec){clearInterval(T);R={l,i:0,s:0,h:0,a:null,t:title,end:sec?Date.now()+sec*1e3:0};
+ if(!l.length)return put(`<div class="box">Nothing here yet.</div>`);if(sec)T=setInterval(tick,500);show()}
+function tick(){if(!R.end)return;const l=Math.max(0,Math.ceil((R.end-Date.now())/1e3)),e=$('#tm');if(e)e.textContent=Math.floor(l/60)+':'+String(l%60).padStart(2,'0');if(!l)finish()}
+function show(){if(R.i>=R.l.length)return finish();const q=Q[R.l[R.i]];
+ let h=`<div class="row"><button class="chip" onclick="go(cur)">${t('quit')}</button><span class="tag">${R.t} · ${R.i+1}/${R.l.length} · ${q[1]}</span><b id="tm"></b></div><div class="card"><div class="glow"></div><div class="inset"></div><div class="in"><h2 dir="ltr">${q[2]}</h2>`;
+ q[3].forEach((o,k)=>{const c=R.a==null?'':k==q[4]?' ok':k==R.a?' no':'';h+=`<button class="o${c}" dir="ltr" ${R.a!=null?'disabled':''} onclick="pick(${k})">${o}</button>`});
+ if(R.a==null){for(let k=0;k<R.h;k++)h+=`<div class="hint">${q[5+k]}</div>`;if(R.h<3)h+=`<button class="chip" onclick="R.h++;show()">${t('hint')[R.h]}</button>`}
+ else h+=`<div class="hint ${R.a==q[4]?'g':'r'}"><b>${R.a==q[4]?t('ok'):t('no')}</b> ${q[7]}</div>`+(R.a!=q[4]?aiBtn():'');
+ h+='</div></div>'+(R.a!=null?`<div class="row">${btn(t('next'),'R.i++;R.a=null;R.h=0;show()')}</div>`:'');put(h);tick()}
+function pick(k){const id=R.l[R.i],q=Q[id],ok=k==q[4];R.a=k;rec(q[1],ok);
+ if(ok){R.s++;if(R.h<3)S.d[id]=1;const m=S.m[id];if(m){m.s++;if(m.s>=3)m.ok=1;else m.due=Date.now()+[0,1,3,7][m.s]*DAY}}
+ else{const m=S.m[id]||{f:0};S.m[id]={f:m.f+1,s:0,ok:0,due:Date.now()}}
+ save();if(!ok)AIC=`Question: ${q[2]}\nOptions: ${q[3].join(' | ')}\nCorrect answer: ${q[3][q[4]]}\nStudent chose: ${q[3][k]}`;show();if(!ok&&S.auto&&hasAI())setTimeout(ex,80)}
+function finish(){clearInterval(T);R.end=0;put(`<div class="card"><div class="glow"></div><div class="inset"></div><div class="in"><h2>${t('res')}</h2><div style="font:700 44px Georgia">${R.s} / ${R.l.length}</div></div></div><div class="row">${btn(t('home'),'go(cur)')}</div>`)}
+const exam=()=>run(Q.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,5),'Quiz',180);
+// generator
+const GS={lin:'Linear equations',quad:'Quadratic equations',cross:'Cross multiplication',slope:'Slope',exp:'Exponents',mid:'Midpoint',dist:'Distance'};
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),sg=()=>Math.random()<.5?-1:1,gcd=(a,b)=>b?gcd(b,a%b):a,sgn=n=>(n<0?'− ':'+ ')+Math.abs(n),sup=n=>String(n).replace(/-/g,'⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]),pm=n=>n<0?'−'+Math.abs(n):''+n;
+let GJ=null;
+function mk(){const ks=S.gt.length?S.gt:['lin'];gs=ks[ri(0,ks.length-1)];
+ if(gs=='lin'){const x=ri(-9,9),a=ri(2,9),b=ri(1,9)*sg(),c=a*x+b;G={q:`Solve ${a}x ${sgn(b)} = ${c}`,a:[x],tr:[[[c/a],`You divided by ${a} before moving ${pm(b)}. Move the constant to the other side first.`],[[(c+b)/a],'The constant changed sides without changing its sign. When a number crosses the = sign, its sign flips.']],h:['Undo the + or − first.',`Move ${pm(b)} to the other side, then divide by ${a}.`],s:`x = ${x}`}}
+ else if(gs=='quad'){let r=ri(1,6)*sg(),p=ri(1,6)*sg();if(r==p)p=-p;const b=-(r+p),c=r*p;G={q:`Solve x² ${b?(b<0?'− ':'+ ')+(Math.abs(b)==1?'':Math.abs(b))+'x ':''}${sgn(c)} = 0 (write both answers, separated by a comma)`,a:[r,p],tr:[[[-r,-p],'The signs are flipped. (x − 3) = 0 gives x = 3, so each root is the opposite of the number inside its bracket.']],h:['Factor into (x − r)(x − s).',`Find two numbers that multiply to ${c} and add to ${-b}.`],s:`x = ${r}, ${p}`}}
+ else if(gs=='cross'){const a=ri(2,5),b=ri(2,9),c=ri(1,5),d=ri(2,9),n=b*c,m=a*d,g=gcd(n,m);G={q:`Solve ${a}x/${b} = ${c}/${d}`,a:[n/m],tr:[[[m/n],'You turned the answer upside down. Cross multiply, then divide by the number next to x.'],[[-n/m],'Sign error: every number here is positive.']],h:['Cross multiply.',`${a}x × ${d} = ${c} × ${b}`],s:`x = ${n/g}/${m/g}`}}
+ else if(gs=='slope'){const x1=ri(-4,4),dx=ri(1,4),m=ri(-5,5),y1=ri(-5,5),x2=x1+dx,y2=y1+m*dx,tr=[];if(m)tr.push([[dx/(m*dx)*0+1/m],'You flipped it. Slope is rise over run: Δy ÷ Δx.'],[[-m],'Sign error: subtract in the same order on top and bottom (y₂ − y₁ over x₂ − x₁).']);G={q:`Find the slope through (${x1}, ${y1}) and (${x2}, ${y2})`,a:[m],tr,h:['m = Δy / Δx',`(${y2} − ${y1}) / (${x2} − ${x1})`],s:`m = ${m}`}}
+ else if(gs=='exp'){const a=ri(2,5),n=[2,3,4,-1,-2,-3][ri(0,5)],v=Math.pow(a,n),tr=[[[a*n],`${a}${sup(n)} does not mean ${a} × ${n}. The exponent tells you how many times to multiply ${a} by itself.`]];if(n<0)tr.push([[Math.pow(a,-n)],'A negative exponent means take the reciprocal: 1 over the positive power.'],[[-Math.pow(a,-n)],'A negative exponent does not make the answer negative.']);G={q:`Evaluate ${a}${sup(n)}`,a:[v],tr,h:['The exponent tells you how many times to multiply the base by itself.',n<0?'A negative exponent: take the reciprocal first.':`Write it out: ${Array(n).fill(a).join(' × ')}`],s:`${a}${sup(n)} = ${n<0?'1/'+Math.pow(a,-n):v}`}}
+ else if(gs=='mid'){const x1=ri(-6,6),y1=ri(-6,6),x2=x1+2*ri(1,3)*sg(),y2=y1+2*ri(1,3)*sg(),mx=(x1+x2)/2,my=(y1+y2)/2;G={q:`Find the midpoint of (${x1}, ${y1}) and (${x2}, ${y2}). Write it like (x, y)`,a:[mx,my],ord:1,tr:[[[x1+x2,y1+y2],'You added the coordinates but did not divide by 2. The midpoint is the average.'],[[my,mx],'You swapped x and y. The x value always comes first.']],h:['Average the x values, then average the y values.',`(${x1} + ${x2})/2 and (${y1} + ${y2})/2`],s:`(${mx}, ${my})`}}
+ else{const Tr=[[3,4,5],[5,12,13],[8,15,17],[6,8,10]][ri(0,3)],x1=ri(-4,4),y1=ri(-4,4),x2=x1+sg()*Tr[0],y2=y1+sg()*Tr[1];G={q:`Find the distance between (${x1}, ${y1}) and (${x2}, ${y2})`,a:[Tr[2]],tr:[[[Tr[0]**2+Tr[1]**2],'You forgot the square root at the end. d = √(Δx² + Δy²).'],[[Tr[0]+Tr[1]],'You added the differences. Square each one first, add them, then take the square root.']],h:['d = √[(x₂ − x₁)² + (y₂ − y₁)²]',`The differences are ${Math.abs(x2-x1)} and ${Math.abs(y2-y1)}.`],s:`d = ${Tr[2]}`}}
+ G.k=gs}
+function parseAns(raw){const notes=[];let s=raw;
+ if(/\s/.test(raw.trim()))notes.push('I ignored the spaces in your answer, so they are not counted as a mistake.');
+ s=s.replace(/\s+/g,'').replace(/[−–—]/g,'-').replace(/[;،]|and|or/gi,',').replace(/^[a-z]=/i,'');
+ if(G.ord)s=s.replace(/[()]/g,'');
+ const r=s.split(',');if(r.length>1&&r[r.length-1]==='')notes.push('There was an extra comma at the end. I ignored it.');
+ const pcs=r.filter(x=>x!=='').map(t=>{const m=t.match(/^(-?\d*\.?\d+)(?:\/(-?\d*\.?\d+))?$/);let v=NaN;if(m)v=m[2]!==undefined?+m[1]/+m[2]:+m[1];return{t,v,bad:!isFinite(v)}});
+ return{pcs,notes}}
+function judge(){const{pcs,notes}=parseAns(ans),e=G.a,eq=(a,b)=>Math.abs(a-b)<1e-6,msgs=[];let ok=false,hl=pcs.map(()=>false);
+ const bad=pcs.filter(p=>p.bad);
+ if(!pcs.length||bad.length){bad.forEach(p=>msgs.push(`I can’t read “${p.t}”. Use plain numbers like 3 or -2, fractions like 3/10, and a comma between answers.`));if(!pcs.length)msgs.push('Your answer is empty.');return{ok:false,msgs,notes,pcs,hl}}
+ const v=pcs.map(p=>p.v);
+ if(G.ord){hl=v.map((x,i)=>i<e.length&&eq(x,e[i]));ok=v.length==e.length&&hl.every(Boolean);if(v.length!=e.length)msgs.push(`This answer needs ${e.length} numbers (x first, then y), like (4, 6). You wrote ${v.length}.`)}
+ else{const sv=[...v].sort((a,b)=>a-b),se=[...e].sort((a,b)=>a-b);hl=v.map(x=>e.some(y=>eq(x,y)));ok=sv.length==se.length&&sv.every((x,i)=>eq(x,se[i]));
+  if(!ok&&v.length<e.length)msgs.push(`You gave ${v.length} answer, but this question has ${e.length}. Write all of them, separated by a comma.`);
+  if(!ok&&v.length>e.length)msgs.push(`This question has only ${e.length} answer${e.length>1?'s':''}, but you wrote ${v.length}.`);
+  if(!ok&&e.length>1&&new Set(v).size<v.length)msgs.push('You wrote the same answer twice.')}
+ if(!ok){const c=G.ord?v:[...v].sort((a,b)=>a-b);(G.tr||[]).forEach(([t,m])=>{const tt=G.ord?t:[...t].sort((a,b)=>a-b);if(tt.length==c.length&&tt.every((x,i)=>isFinite(x)&&eq(x,c[i])))msgs.push(m)});
+  if(!msgs.length)msgs.push('Your answer is readable, but the value is not right. Use a hint, then check each step.')}
+ return{ok,msgs,notes,pcs,hl}}
+const nq=()=>{G=null;ans='';gdone=null;gh=0;GJ=null;go(2)};
+function tg(k){const i=S.gt.indexOf(k);if(i>=0){if(S.gt.length>1)S.gt.splice(i,1)}else S.gt.push(k);save();nq()}
+const cbx=(on,fn,x)=>`<label class="checkbox-container"><input class="custom-checkbox" type="checkbox" ${on?'checked':''} onchange="${fn}"><span class="checkmark"></span>${x}</label>`;
+function gen(){if(!G)mk();
+ let h=`<div class="box"><b>${t('topics')}</b><div class="tg">${Object.keys(GS).map(k=>cbx(S.gt.includes(k),`tg('${k}')`,GS[k])).join('')}</div></div><div class="card"><div class="glow"></div><div class="inset"></div><div class="in"><p class="tag">${t('skill')}: ${GS[G.k]}</p><h2 dir="ltr">${G.q}</h2><div class="ans" id="ans" onclick="$('#kb').classList.add('show')">${ans||'…'}</div>`;
+ for(let k=0;k<gh;k++)h+=`<div class="hint">${k<2?G.h[k]:G.s}</div>`;
+ if(gdone!=null&&GJ){const J=GJ,o=G.ord;h+=`<div class="hint ${gdone?'g':'r'}"><b>${gdone?t('ok'):t('no')}</b></div><div class="yours"><span class="tag">${t('yours')}:</span> ${o?'(':''}${J.pcs.map((p,i)=>`<span class="${!p.bad&&J.hl[i]?'hg':'hr'}" dir="ltr">${p.t}</span>`).join(', ')}${o?')':''}</div>`+J.notes.map(n=>`<div class="hint nt">${n}</div>`).join('')+J.msgs.map(m=>`<div class="hint r">${m}</div>`).join('')+`<div class="hint g"><b>${t('right')}:</b> <span dir="ltr">${G.s}</span></div>`+(gdone?'':aiBtn())}
+ h+='</div></div><div class="row">'+(gdone==null?btn(t('check'),'chk()')+(gh<3?`<button class="chip" onclick="gh++;go(2)">${t('hint')[gh]}</button>`:''):btn(t('new'),'nq()'))+'</div>';return h}
+function chk(){if(!ans)return;const J=judge();GJ=J;gdone=J.ok;rec(GS[G.k],J.ok);AIC=`Question: ${G.q}\nCorrect answer: ${G.s}\nStudent’s answer: ${ans}`;go(2);if(!J.ok&&S.auto&&hasAI())setTimeout(ex,80)}
+const KEYS=[...'789−⌫456/,123=C0x²()'];
+$('#kb').innerHTML=`<div class="keys">${KEYS.map(k=>`<button class="k" onclick="kp('${k}')">${k}</button>`).join('')}<button class="k w" onclick="$('#kb').classList.remove('show')">OK</button></div>`;
+function kp(k){ans=k=='⌫'?ans.slice(0,-1):k=='C'?'':ans+k;$('#ans').textContent=ans||'…'}
+function bank(){const all=Object.keys(S.m),open=all.filter(i=>!S.m[i].ok),w=Object.entries(S.w).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+ return `<h2>${t('bank')}</h2><div class="stats"><div class="sb"><p class="tag">Due</p><b>${due().length}</b></div><div class="sb"><p class="tag">Open</p><b>${open.length}</b></div><div class="sb"><p class="tag">Mastered</p><b>${all.length-open.length}</b></div></div><div class="row">${btn(t('rev'),"run(due(),'Review')")}</div><div class="box"><b>${t('wk')}</b>${w.length?w.map(x=>`<div>${x[0]}<div class="bar"><i style="width:${Math.min(100,x[1]*20)}%"></i></div></div>`).join(''):`<div class="tag">${t('none')}</div>`}</div>`}
+function stat(){const ds=[...Array(7)].map((_,i)=>S.log[new Date(Date.now()-(6-i)*DAY).toISOString().slice(0,10)]||[0,0]),mx=Math.max(1,...ds.map(d=>d[0])),all=Object.values(S.log),tot=all.reduce((a,d)=>a+d[0],0),cor=all.reduce((a,d)=>a+d[1],0),td=(S.log[new Date().toISOString().slice(0,10)]||[0])[0];
+ return `<div class="card"><div class="glow"></div><div class="inset"></div><div class="in"><div class="hd"><div class="row" style="margin:0;gap:8px"><div class="ic"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#fff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div><b>${t('st')}</b></div><span class="live"><i></i>Live</span></div>
+ <div class="stats"><div class="sb"><p class="tag">${t('ans')}</p><b>${tot}</b><small>+${td}</small></div><div class="sb"><p class="tag">${t('acc')}</p><b>${tot?Math.round(cor*100/tot):0}%</b></div></div>
+ <div class="chart">${ds.map(d=>`<div class="b" style="height:${Math.max(8,d[0]/mx*100)}%"><i style="height:${d[0]?d[1]/d[0]*100:0}%"></i></div>`).join('')}</div>
+ <div class="row" style="justify-content:space-between;margin:0"><span class="tag">${t('d7')}</span><button class="chip" onclick="go(3)">${t('det')}</button></div></div></div>
+ <div class="box">${U.filter(u=>ids(u[0]).length).map(u=>{const n=ids(u[0]),d=n.filter(i=>S.d[i]).length;return `<div>${u[0]} ${S.lang=='ar'?u[2]:u[1]}<div class="bar"><i style="width:${n.length?d*100/n.length:0}%"></i></div></div>`}).join('')}</div>`}
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PN={gemini:'Google Gemini (free)',groq:'Groq (free)',openrouter:'OpenRouter (free models)',custom:'Custom (OpenAI-style)'},DM={gemini:'gemini-2.5-flash',groq:'llama-3.3-70b-versatile',openrouter:'meta-llama/llama-3.3-70b-instruct:free',custom:''};
+const errMsg=e=>e instanceof TypeError?'The request was blocked or there is no internet. Pages opened inside claude.ai cannot call outside APIs, so use the standalone file (see the guide in Settings).':String(e&&e.message||e);
+const hasAI=()=>S.ai.some(a=>a.k)||(S.bi!==false&&!!(window.claude&&window.claude.use));
+const aiBtn=()=>hasAI()?`<div class="row"><button class="chip" onclick="ex()">✨ ${t('expl')}</button></div><div id="aiout"></div>`:`<div class="row"><button class="chip" onclick="openSet()">${t('setai')}</button></div>`;
+async function callOne(a,prompt){let url,o;const m=a.m||DM[a.p];
+ if(a.p=='gemini'){url=`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`;o={method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':a.k},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}}
+ else{url=a.p=='groq'?'https://api.groq.com/openai/v1/chat/completions':a.p=='openrouter'?'https://openrouter.ai/api/v1/chat/completions':a.u;o={method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+a.k},body:JSON.stringify({model:m,messages:[{role:'user',content:prompt}]})}}
+ const r=await fetch(url,o),j=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error(j.error&&(j.error.message||j.error)||'Error '+r.status);
+ return a.p=='gemini'?j.candidates[0].content.parts.map(p=>p.text).join(''):j.choices[0].message.content}
+async function callAI(p){const errs=[];
+ for(const a of S.ai){if(!a.k)continue;try{return await callOne(a,p)}catch(e){errs.push(PN[a.p]+': '+errMsg(e))}}
+ if(S.bi!==false&&window.claude&&window.claude.use){try{const sm=await window.claude.use('sample');if(sm)return (await sm(p,{modelTier:'quick'})).text}catch(e){errs.push('Claude: '+(e.message||e.code))}}
+ throw new Error(errs.join('\n')||'No AI provider is set up. Open Settings to add one.')}
+async function ex(){const o=$('#aiout');if(!o)return;o.innerHTML=`<div class="hint nt">${t('thinking')}</div>`;
+ const p=`You are a friendly maths tutor for a foundation-year university student. ${S.lang=='ar'?'Reply in simple Arabic, but keep numbers and maths symbols as they are.':'Reply in simple English.'}\n${AIC}\nFind the exact mistake and explain it in 3 to 5 short steps, then show the correct method. Use **bold** to highlight the mistake. No LaTeX.`;
+ try{const r=await callAI(p);o.innerHTML=`<div class="hint nt" dir="auto">${esc(r).replace(/\*\*(.+?)\*\*/g,'<b class="mk">$1</b>').replace(/\n/g,'<br>')}</div>`}catch(e){o.innerHTML=`<div class="hint r">${esc(errMsg(e)).replace(/\n/g,'<br>')}</div>`}}
+const ap=(i,k,v)=>{S.ai[i][k]=v;save()};
+async function testAI(i){const o=$('#t'+i);o.textContent='Testing…';try{const r=await callOne(S.ai[i],'Reply with the single word OK.');o.textContent='Works ✓ '+r.slice(0,30)}catch(e){o.textContent='Failed: '+errMsg(e)}}
+function setLang(l){S.lang=l;save();shell();openSet()}
+function rs(b){if(b.dataset.c){S.m={};S.d={};S.log={};S.w={};save();go(cur)}else{b.dataset.c=1;b.textContent='Tap again to confirm'}}
+function openSet(){clearInterval(T);$('#kb').classList.remove('show');document.querySelectorAll('.tabs input').forEach(r=>r.checked=false);$('.tabs').classList.add('off');scrollTo(0,0);
+ let h=`<div class="row"><button class="chip" onclick="go(cur)">${t('home')}</button></div><h2>${t('set')}</h2>
+ <div class="box"><b>${t('lang')}</b><div class="chips" style="margin-top:8px"><button class="chip ${S.lang=='en'?'on':''}" onclick="setLang('en')">English</button><button class="chip ${S.lang=='ar'?'on':''}" onclick="setLang('ar')">العربية</button></div></div>
+ <div class="box"><b>${t('expl')}</b>${cbx(S.auto,'S.auto=this.checked;save()',t('auto'))}${cbx(S.bi!==false,'S.bi=this.checked;save()',t('bi'))}<p class="tag">${t('aiinfo')}</p>`
+ +S.ai.map((a,i)=>`<div class="prov"><select class="inp" onchange="ap(${i},'p',this.value);openSet()">${Object.keys(PN).map(k=>`<option value="${k}" ${a.p==k?'selected':''}>${PN[k]}</option>`).join('')}</select><input class="inp" type="password" placeholder="API key" value="${esc(a.k)}" onchange="ap(${i},'k',this.value.trim())"><input class="inp" placeholder="Model (optional: ${DM[a.p]||'required'})" value="${esc(a.m)}" onchange="ap(${i},'m',this.value.trim())">${a.p=='custom'?`<input class="inp" placeholder="Chat completions URL" value="${esc(a.u)}" onchange="ap(${i},'u',this.value.trim())">`:''}<div class="row" style="margin:4px 0"><button class="chip" onclick="testAI(${i})">Test</button><button class="chip" onclick="S.ai.splice(${i},1);save();openSet()">Remove</button></div><div id="t${i}" class="tag"></div></div>`).join('')
+ +`<button class="chip" onclick="S.ai.push({p:'gemini',k:'',m:'',u:''});save();openSet()">+ ${t('addp')}</button></div>
+ <details class="box"><summary><b>How to get a free Gemini API key</b></summary><ol>
+ <li>Open <b>aistudio.google.com</b> and sign in with your Google account.</li>
+ <li>Tap <b>Get API key</b> (left menu or top of the page).</li>
+ <li>Tap <b>Create API key</b> and choose a project, or let it create one.</li>
+ <li>Copy the key. It usually starts with “AIza”.</li>
+ <li>Come back here, tap <b>+ ${t('addp')}</b>, choose Google Gemini, paste the key and tap <b>Test</b>.</li></ol>
+ <p class="tag">The free plan has limits per minute and per day. If you see a quota error, wait a little, or add a second key from another Google account as another provider. Never share your key. Menu names on Google’s site may change slightly.</p>
+ <p class="tag"><b>Groq:</b> console.groq.com, then API Keys, then Create. <b>OpenRouter:</b> openrouter.ai/keys, then Create key, and pick a model that ends with “:free”.</p></details>
+ <details class="box"><summary><b>Why does Test say “blocked”?</b></summary><p class="tag">Inside the claude.ai page, the browser only allows requests to claude.ai itself. Gemini, Groq and OpenRouter work when you open the standalone HTML file (saved on your phone, or put on any website). In this page, the built-in Claude backup still works.</p></details>
+ <div class="row"><button class="chip" onclick="rs(this)">Reset my progress</button></div>`;
+ put(h)}
+const PG="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z";
+$('#ld').innerHTML=`<div class="loader"><div><ul>${('<li><svg fill="currentColor" viewBox="0 0 90 120"><path d="'+PG+'"/></svg></li>').repeat(6)}</ul></div><span>Loading</span></div>`;
+setTimeout(()=>{$('#ld').classList.add('hide');setTimeout(()=>$('#ld').remove(),700)},2500);
+shell();
+</script></body></html>
