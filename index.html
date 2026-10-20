@@ -203,6 +203,107 @@ details summary{cursor:pointer}details ol{padding-inline-start:20px}
 @keyframes page-4{30%{transform:rotateY(180deg);opacity:0}50%{opacity:1}65%,100%{opacity:0}80%,100%{transform:rotateY(0deg)}}
 @keyframes page-5{45%{transform:rotateY(180deg);opacity:0}65%{opacity:1}80%,100%{opacity:0}95%,100%{transform:rotateY(0deg)}}
 @media(prefers-reduced-motion:reduce){.page,.step,.hint{animation:none}}
+</style>
+<style>
+:root{--w:min(84px,calc((100vw - 56px)/5));color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1000px 420px at 50% -10%,#16275a,transparent),#070c18;color:#e2e8f0;font:16px/1.5 "Segoe UI",Tahoma,sans-serif;min-height:100vh}
+main{max-width:640px;margin:0 auto;padding:12px 14px 330px}
+h1{font:700 22px/1.2 "Segoe UI",sans-serif;margin:0;background:linear-gradient(90deg,#23C4F8,#6ea8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:20px;margin:14px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.tag{font-size:13px;color:#94a3b8;margin:4px 0}
+button{font:inherit;cursor:pointer;color:inherit}
+*{-webkit-tap-highlight-color:transparent}button,label,.ans{outline:none}button:focus,button:focus-visible{outline:none}
+.container{direction:ltr;display:flex;justify-content:center;margin:14px 0}
+.tabs{--i:0;display:flex;position:relative;background:#0f172a;box-shadow:0 0 1px rgba(39,94,254,.5),0 6px 18px rgba(39,94,254,.25);padding:.75rem;border-radius:99px}
+.tabs *{z-index:2}
+.container input{display:none}
+.tab{position:relative;display:flex;align-items:center;justify-content:center;height:34px;width:var(--w);font-size:.72rem;color:#94a3b8;font-weight:600;border-radius:99px;cursor:pointer;transition:color .2s}
+.container input:checked+label{color:#fff}
+.notification{position:absolute;top:-2px;right:4px;min-width:.95rem;height:.95rem;font-size:10px;border-radius:99px;background:#f4c542;color:#14213d;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.glider{position:absolute;height:34px;width:var(--w);background:linear-gradient(135deg,#23C4F8,#275EFE);z-index:1;border-radius:99px;transition:transform .4s cubic-bezier(.23,1,.32,1);transform:translateX(calc(var(--i)*100%))}
+.page{animation:pg .5s cubic-bezier(.23,1,.32,1)}.q .step,.q .hint{animation:none}
+@keyframes pg{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.chip{flex:none;border:1px solid #2a3a63;background:transparent;color:#cbd5e1;padding:6px 13px;border-radius:99px;font-size:14px;transition:all .25s}
+.chip:hover{border-color:#23C4F8}.chip.on{background:linear-gradient(135deg,#23C4F8,#275EFE);border-color:transparent;color:#fff}
+.box{background:#0b1428;border:1px solid #1e2a4a;border-radius:12px;padding:14px;margin:10px 0}
+.step{display:flex;gap:10px;align-items:center;margin:8px 0;animation:pg .5s both}
+.step i{flex:none;width:24px;height:24px;border-radius:50%;background:#275EFE;display:flex;align-items:center;justify-content:center;font-size:13px;font-style:normal}
+.vc{display:block;width:100%;text-align:start;background:#0b1428;border:1px solid #1e2a4a;border-radius:12px;padding:12px 14px;margin:7px 0;transition:border-color .25s,transform .25s}
+.vc:hover{border-color:#23C4F8;transform:translateY(-1px)}
+.back{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.23,1,.32,1)}.back>div{overflow:hidden}
+.vc.open .back{grid-template-rows:1fr}
+.checkbox-container{display:block;position:relative;padding-inline-start:35px;min-height:25px;line-height:25px;margin:8px 0;cursor:pointer;font-size:15px;user-select:none}
+.custom-checkbox{position:absolute;opacity:0;cursor:pointer;height:0;width:0}
+.checkmark{position:absolute;top:0;inset-inline-start:0;height:25px;width:25px;background-color:#1e2a4a;border-radius:4px;transition:background-color .3s;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+.checkmark:after{content:"";position:absolute;display:none;left:9px;top:5px;width:5px;height:10px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.custom-checkbox:checked~.checkmark{background-color:#2196F3;box-shadow:0 3px 7px rgba(33,150,243,.3)}
+.custom-checkbox:checked~.checkmark:after{display:block}.custom-checkbox:checked~.checkmark.pop:after{animation:checkAnim .2s forwards}
+@keyframes checkAnim{0%{height:0}100%{height:10px}}
+.sm{padding:2px 10px}.ur{display:flex;justify-content:space-between;align-items:center;gap:8px}.ur .checkbox-container{flex:1}.sk{margin:0 0 6px 14px;padding-inline-start:10px;border-inline-start:2px solid #1e2a4a}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin-top:6px}
+.tabs.off .glider{opacity:0}.glider{transition:transform .4s cubic-bezier(.23,1,.32,1),opacity .3s}
+.inp{display:block;width:100%;background:#0b1428;border:1px solid #2a3a63;border-radius:10px;padding:10px;color:inherit;font:inherit;margin:6px 0}
+.prov{border:1px solid #1e2a4a;border-radius:10px;padding:10px;margin:10px 0}
+details summary{cursor:pointer}details ol{padding-inline-start:20px}
+.yours{margin:8px 0;font-size:18px}.hg{background:rgba(16,185,129,.2);color:#6ee7b7;padding:1px 7px;border-radius:6px}.hr{background:rgba(248,113,113,.2);color:#fca5a5;padding:1px 7px;border-radius:6px;text-decoration:underline wavy #f87171}
+.nt{border-color:#23C4F8}.mk{background:rgba(244,197,66,.25);color:#fde68a;padding:0 3px;border-radius:4px}
+.vh{display:flex;justify-content:space-between;align-items:center;gap:10px}.ar2{color:#6ea8ff;font-size:18px;direction:rtl}.wo .step i{background:#f4c542;color:#14213d}.wo{border-color:#5c4a14}.ar{direction:rtl;text-align:right;font-size:20px;color:#6ea8ff;margin-top:6px}
+.o{display:block;width:100%;text-align:start;margin:8px 0;padding:12px 14px;background:#0b1428;border:1px solid #2a3a63;border-radius:10px;transition:all .25s}
+.o:hover:not(:disabled){border-color:#23C4F8;transform:translateX(3px)}
+.o.ok{background:#065f46;border-color:#10b981}.o.no{background:#7f1d1d;border-color:#f87171}
+.hint{border-inline-start:4px solid #f4c542;padding:4px 10px;margin:10px 0;animation:pg .4s}
+.hint.g{border-color:#10b981}.hint.r{border-color:#f87171}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.card{position:relative;border-radius:12px;background:#020617;padding:16px;margin:10px 0;box-shadow:0 25px 50px -12px rgba(0,0,0,.6);transition:transform .3s,box-shadow .3s}
+.card:hover{transform:scale(1.02);box-shadow:0 25px 50px -12px rgba(99,102,241,.25)}
+.glow{position:absolute;inset:0;border-radius:12px;background:linear-gradient(90deg,#6366f1,#a855f7,#ec4899);opacity:.2;filter:blur(4px);transition:opacity .3s}
+.card:hover .glow{opacity:.35}
+.inset{position:absolute;inset:1px;border-radius:11px;background:#020617}
+.in{position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ic{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center}
+.live{display:flex;align-items:center;gap:5px;border-radius:99px;background:rgba(16,185,129,.1);color:#10b981;font-size:12px;padding:3px 9px}
+.live i{width:6px;height:6px;border-radius:50%;background:#10b981}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px;margin-bottom:14px}
+.sb{background:rgba(15,23,42,.6);border-radius:8px;padding:10px}.sb b{font-size:20px;display:block}.sb small{color:#10b981}
+.chart{height:96px;background:rgba(15,23,42,.6);border-radius:8px;padding:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:4px;margin-bottom:14px}
+.b{flex:1;max-width:28px;background:rgba(99,102,241,.3);border-radius:3px;display:flex;align-items:flex-end;transition:height .6s}.b i{display:block;width:100%;background:#6366f1;border-radius:3px;transition:height .6s}
+.bar{height:6px;background:#1e2a4a;border-radius:9px;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#23C4F8,#275EFE);border-radius:9px}
+.ans{direction:ltr;text-align:left;min-height:52px;font:600 24px/1.6 Georgia,serif;border:2px dashed #2a3a63;border-radius:10px;padding:6px 12px;margin:10px 0;color:#23C4F8;cursor:text}
+#kb{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#0b1428;border-top:1px solid #1e2a4a;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .4s cubic-bezier(.23,1,.32,1)}
+#kb.show{transform:none}
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:420px;margin:0 auto;direction:ltr}
+.k{padding:12px 0;border:0;border-radius:10px;background:#16213f;font-size:19px;transition:background .15s,transform .1s}.k:active{background:#275EFE;transform:scale(.94)}
+.k.w{grid-column:span 5;background:linear-gradient(135deg,#23C4F8,#275EFE);font-weight:600}
+.ab{position:relative;display:flex;align-items:center;gap:4px;padding:14px 34px;border:4px solid transparent;font-size:16px;background-color:transparent;border-radius:100px;font-weight:600;color:greenyellow;box-shadow:0 0 0 2px greenyellow;cursor:pointer;overflow:hidden;transition:all .6s cubic-bezier(.23,1,.32,1)}
+.ab svg{position:absolute;width:24px;fill:greenyellow;z-index:9;transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab .arr-1{right:16px}.ab .arr-2{left:-25%}
+.ab .circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;background-color:greenyellow;border-radius:50%;opacity:0;transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab .text{position:relative;z-index:1;transform:translateX(-12px);transition:all .8s cubic-bezier(.23,1,.32,1)}
+.ab:hover{box-shadow:0 0 0 12px transparent;color:#212121;border-radius:12px}
+.ab:hover .arr-1{right:-25%}.ab:hover .arr-2{left:16px}.ab:hover .text{transform:translateX(12px)}
+.ab:hover svg{fill:#212121}.ab:active{scale:.95;box-shadow:0 0 0 4px greenyellow}
+.ab:hover .circle{width:220px;height:220px;opacity:1}
+#ld{position:fixed;inset:0;z-index:99;background:#070c18;display:flex;align-items:center;justify-content:center;transition:opacity .6s}#ld.hide{opacity:0;pointer-events:none}
+.loader{--background:linear-gradient(135deg,#23C4F8,#275EFE);--shadow:rgba(39,94,254,.28);--text:#9aa7c2;--page:rgba(255,255,255,.36);--page-fold:rgba(255,255,255,.52);--duration:3s;width:200px;height:140px;position:relative;direction:ltr}
+.loader:before,.loader:after{--r:-6deg;content:"";position:absolute;bottom:8px;width:120px;top:80%;box-shadow:0 16px 12px var(--shadow);transform:rotate(var(--r))}
+.loader:before{left:4px}.loader:after{--r:6deg;right:4px}
+.loader div{width:100%;height:100%;border-radius:13px;position:relative;z-index:1;perspective:600px;box-shadow:0 4px 6px var(--shadow);background-image:var(--background)}
+.loader div ul{margin:0;padding:0;list-style:none;position:relative}
+.loader div ul li{--r:180deg;--o:0;--c:var(--page);position:absolute;top:10px;left:10px;transform-origin:100% 50%;color:var(--c);opacity:var(--o);transform:rotateY(var(--r));animation:var(--duration) ease infinite}
+.loader div ul li:nth-child(2){--c:var(--page-fold);animation-name:page-2}.loader div ul li:nth-child(3){--c:var(--page-fold);animation-name:page-3}
+.loader div ul li:nth-child(4){--c:var(--page-fold);animation-name:page-4}.loader div ul li:nth-child(5){--c:var(--page-fold);animation-name:page-5}
+.loader div ul li svg{width:90px;height:120px;display:block}
+.loader div ul li:first-child{--r:0deg;--o:1}.loader div ul li:last-child{--o:1}
+.loader span{display:block;left:0;right:0;top:100%;margin-top:20px;text-align:center;color:var(--text)}
+@keyframes page-2{0%{transform:rotateY(180deg);opacity:0}20%{opacity:1}35%,100%{opacity:0}50%,100%{transform:rotateY(0deg)}}
+@keyframes page-3{15%{transform:rotateY(180deg);opacity:0}35%{opacity:1}50%,100%{opacity:0}65%,100%{transform:rotateY(0deg)}}
+@keyframes page-4{30%{transform:rotateY(180deg);opacity:0}50%{opacity:1}65%,100%{opacity:0}80%,100%{transform:rotateY(0deg)}}
+@keyframes page-5{45%{transform:rotateY(180deg);opacity:0}65%{opacity:1}80%,100%{opacity:0}95%,100%{transform:rotateY(0deg)}}
+@media(prefers-reduced-motion:reduce){.page,.step,.hint{animation:none}}
 </style></head><body><main id="app"></main><div id="kb"></div><div id="ld"></div>
 <script>
 const U=[["1.1","Real Numbers","الأعداد الحقيقية"],["1.2","Exponents","الأسس"],["1.3","Algebraic Expressions","التعبيرات الجبرية"],["1.4","Rational Expressions","الصيغ الجبرية النسبية"],["1.5","Equations","المعادلات"],["1.6","Modeling with Equations","التطبيقات على المعادلات"],["1.7","Inequalities","المتباينات"],["1.8","Coordinate Geometry","الهندسة الإحداثية"],["1.9","Page missing","بانتظار الصفحة"],["1.10","Lines","المستقيمات"],["R","Mixed Review","مراجعة عامة"]];
@@ -361,7 +462,7 @@ function prac(){const n=base().length;
  return dailyCard()+`<div class="box"><b>${t('pick')}</b><div class="row" style="margin:8px 0"><button class="chip" onclick="S.pk=keys();save();go(1,1)">${t('all')}</button><button class="chip" onclick="S.pk=[];save();go(1,1)">${t('clr')}</button></div>${U.filter(u=>skl(u[0]).length).map(u=>unitRow(u[0])).join('')}</div>
  <div class="box"><b>${t('opts')}</b><p class="tag">${t('qn')}</p>${opt('n',[5,10,20,0],v=>v||t('qall'))}<p class="tag">${t('qt')}</p>${opt('min',[3,5,10],v=>v+' min')}${cbx(S.po.shuf,"po('shuf',this.checked?1:0)",t('shuf'))}${cbx(S.po.mis,"po('mis',this.checked?1:0)",t('mis'))}</div>
  <p class="tag">${n} ${t('match')}${S.po.n&&n>S.po.n?' · '+S.po.n+' '+t('used'):''}</p><div class="row">${n?btn(t('start'),"run(pl(),'Practice')")+btn(t('quiz'),'exam()'):''}</div>`}
-function run(l,title,sec){clearInterval(T);R={l,i:0,s:0,h:0,a:null,t:title,end:sec?Date.now()+sec*1e3:0};
+function run(l,title,sec){clearInterval(T);l.forEach(fresh);R={l,i:0,s:0,h:0,a:null,t:title,end:sec?Date.now()+sec*1e3:0};
  if(!l.length)return put(`<div class="box">Nothing here yet.</div>`);if(sec)T=setInterval(tick,500);show()}
 function tick(){if(!R.end)return;const l=Math.max(0,Math.ceil((R.end-Date.now())/1e3)),e=$('#tm');if(e)e.textContent=Math.floor(l/60)+':'+String(l%60).padStart(2,'0');if(!l)finish()}
 function show(qt){if(R.i>=R.l.length)return finish();const q=Q[R.l[R.i]];
@@ -417,6 +518,40 @@ function gen(){if(!G)mk();
  if(gdone!=null&&GJ){const J=GJ,o=G.ord;h+=`<div class="hint ${gdone?'g':'r'}"><b>${gdone?t('ok'):t('no')}</b></div><div class="yours"><span class="tag">${t('yours')}:</span> ${o?'(':''}${J.pcs.map((p,i)=>`<span class="${!p.bad&&J.hl[i]?'hg':'hr'}" dir="ltr">${esc(p.t)}</span>`).join(', ')}${o?')':''}</div>`+J.notes.map(n=>`<div class="hint nt">${n}</div>`).join('')+J.msgs.map(m=>`<div class="hint r">${m}</div>`).join('')+`<div class="hint g"><b>${t('right')}:</b> <span dir="ltr">${G.s}</span></div>`+(gdone?'':aiBtn())}
  h+='</div></div><div class="row">'+(gdone==null?btn(t('check'),'chk()')+(gh<3?`<button class="chip" onclick="gh++;go(2,1)">${t('hint')[gh]}</button>`:''):btn(t('new'),'nq()'))+'</div>';return h}
 function chk(){if(!ans)return;const J=judge();GJ=J;gdone=J.ok;rec(GS[G.k],J.ok);AIC=`Question: ${G.q}\nCorrect answer: ${G.s}\nStudent’s answer: ${ans}`;go(2);if(!J.ok&&S.auto&&hasAI())setTimeout(ex,80)}
+// practice questions: fresh random numbers every time
+const sh=a=>a.sort(()=>Math.random()-.5),rp=a=>a[ri(0,a.length-1)],pp=n=>n<0?'('+pm(n)+')':''+n,fs=a=>'{'+[...a].sort((x,y)=>x-y).join(', ')+'}',
+ fr=(n,m)=>{if(m<0){n=-n;m=-m}const g=gcd(Math.abs(n),m);n/=g;m/=g;return m==1?pm(n):pm(n)+'/'+m},
+ tm=(c,e)=>`${c<0?'− ':'+ '}${Math.abs(c)}${e?'x'+(e>1?sup(e):''):''}`;
+function mc(q,c,w,h1,h2,s){c=String(c);const o=[c];for(const x of w){const y=String(x);if(!o.includes(y))o.push(y)}while(o.length<4)o.push(String(ri(11,99)));o.length=4;const a=sh([...o]);return [q,a,a.indexOf(c),h1,h2,s]}
+const GQ={
+'1.1|Number types':()=>{const irr=rp(['√2','√3','√5','√6','√7','√10','π']),o=[];sh([`${ri(1,5)}/${ri(2,9)}`,`${ri(1,9)}.${ri(1,9)}`,`√${rp([4,9,16,25,36])}`,`−${ri(1,9)}`,`${ri(2,9)}/${ri(2,9)}`,'0']).forEach(x=>{if(!o.includes(x)&&o.length<3)o.push(x)});return mc('Which number is irrational?',irr,o,'Rational means it can be written as P/Q.','Which one cannot be a fraction of integers? (Remember √4 = 2.)',`${irr} cannot be written as P/Q, so it is irrational.`)},
+'1.1|Absolute value':()=>{const n=ri(2,40);return mc(`|${Math.random()<.5?'−':''}${n}| = ?`,n,[`−${n}`,0,`1/${n}`],'Absolute value is a distance from zero.','A distance is never negative.',`The distance from 0 is ${n}, so the answer is ${n}.`)},
+'1.1|Sets':()=>{const p=sh([1,2,3,4,5,6,7,8,9]),k=ri(1,2),cm=p.slice(0,k),SA=[...cm,...p.slice(k,k+2)],SB=[...cm,...p.slice(k+2,k+4-(k==2?1:0))],un=[...new Set([...SA,...SB])],hd=`S = ${fs(SA)} and B = ${fs(SB)}. `;
+ return Math.random()<.5?mc(hd+'S ∩ B = ?',fs(cm),[fs(un),fs(SA),'∅',fs(SB)],'Intersection means the common elements.','Which numbers are in both sets?',`Only ${cm.join(', ')} ${k>1?'are':'is'} in both sets.`):mc(hd+'S ∪ B = ?',fs(un),[fs(cm),fs(SA),fs(SB),'∅'],'Union means everything from both sets.','List every number from either set. Write shared numbers once.',`Together the sets contain ${[...un].sort((a,b)=>a-b).join(', ')}.`)},
+'1.2|Negative power':()=>{const a=ri(2,5),n=ri(2,4),v=a**n;return mc(`${a}${sup(-n)} = ?`,`1/${v}`,[`−${v}`,v,`−${a*n}`],'A negative power means take the reciprocal.',`${a}${sup(-n)} = 1/${a}${sup(n)}`,`1/${a}${sup(n)} = 1/${v}.`)},
+'1.2|Exponent rules':()=>{const a=ri(2,6),m=ri(2,5);let n=ri(2,5);if(n==m)n=m+1;return mc(`${a}${sup(m)} × ${a}${sup(n)} = ?`,`${a}${sup(m+n)}`,[`${a}${sup(m*n)}`,`${a*a}${sup(m+n)}`,`${a}${sup(m+n+1)}`],'Same base: add the powers.',`${m} + ${n} = ${m+n}`,`${a}${sup(m)} × ${a}${sup(n)} = ${a}${sup(m+n)}.`)},
+'1.3|Degree':()=>{const d=ri(3,6),e=ri(1,d-1),c1=ri(2,9),c2=ri(1,9)*sg(),c3=ri(1,9)*sg();return mc(`What is the degree of ${c1}x${sup(d)} ${tm(c2,e)} ${tm(c3,0)}?`,d,[c1,d+1,d-1,e,1],'The degree is the highest power.',`Compare the powers: ${d}, ${e} and 0.`,`The highest power is ${d}, so the degree is ${d}.`)},
+'1.3|Factorization':()=>{if(Math.random()<.5){const k=ri(2,9);return mc(`Factor x² − ${k*k}`,`(x − ${k})(x + ${k})`,[`(x − ${k})²`,`(x + ${k})²`,`x(x − ${k*k})`],'This is a difference of squares.',`a² − b² = (a + b)(a − b), with b = ${k}.`,`x² − ${k*k} = (x − ${k})(x + ${k}).`)}
+ const r=ri(2,7),s=ri(r+1,9);return mc(`Factor x² + ${r+s}x + ${r*s}`,`(x + ${r})(x + ${s})`,[`(x − ${r})(x − ${s})`,`(x + ${r*s})(x + 1)`,`(x + ${r})(x − ${s})`],'Find two numbers that multiply to the last number and add to the middle number.',`${r} × ${s} = ${r*s} and ${r} + ${s} = ${r+s}.`,`x² + ${r+s}x + ${r*s} = (x + ${r})(x + ${s}).`)},
+'1.3|Like terms':()=>{const a=ri(2,9);let b=ri(2,9);if(b==a)b=a==9?8:a+1;const p=ri(2,4);return mc(`Simplify ${a}x${sup(p)} + ${b}x${sup(p)}`,`${a+b}x${sup(p)}`,[`${a+b}x${sup(2*p)}`,`${a*b}x${sup(p)}`,`${a+b}x`],'Like terms: add the coefficients.',`${a} + ${b} = ${a+b}`,`The power stays the same: ${a+b}x${sup(p)}.`)},
+'1.4|Lowest form':()=>{const k=ri(2,9),pl=Math.random()<.5,den=`x ${pl?'+':'−'} ${k}`,r=`x ${pl?'−':'+'} ${k}`;return mc(`Simplify (x² − ${k*k})/(${den})`,r,[den,`x² − ${k}`,`${k}`],'Factor the top first.',`x² − ${k*k} = (x − ${k})(x + ${k})`,`Cancel (${den}) to get ${r}.`)},
+'1.4|Undefined value':()=>{const x0=ri(1,6),a=ri(2,5),b=a*x0,n=ri(1,9);return mc(`Which x is not allowed in ${n}/(${a}x − ${b})?`,x0,[0,x0+1,-x0,b].map(pm),'The denominator cannot be 0.',`Solve ${a}x − ${b} = 0.`,`${a}x = ${b}, so x = ${x0}.`)},
+'1.5|Linear equations':()=>{let x=ri(-9,9);if(!x)x=ri(1,9);const a=ri(2,9),b=ri(1,9)*sg(),c=a*x+b;return mc(`Solve ${a}x ${b<0?'−':'+'} ${Math.abs(b)} = ${pm(c)}`,'x = '+pm(x),[-x,x+1,x-1,x+2].map(v=>'x = '+pm(v)),'Get x alone.',`Move ${pm(b)} to the other side: ${a}x = ${pm(c-b)}.`,`Divide by ${a}: x = ${pm(x)}.`)},
+'1.5|Cross multiplication':()=>{const a=ri(2,5),b=ri(2,9),c=ri(1,5),d=ri(2,9),n=b*c,m=a*d;return mc(`Solve ${a}x/${b} = ${c}/${d}`,'x = '+fr(n,m),[fr(m,n),fr(-n,m),fr(n,m+1),fr(n+1,m),fr(a*c,b*d)].map(v=>'x = '+v),'Cross multiply.',`${a}x × ${d} = ${c} × ${b}, so ${m}x = ${n}.`,`x = ${fr(n,m)}.`)},
+'1.5|Discriminant':()=>{const b=ri(1,7)*sg(),c=ri(1,8)*sg(),D=b*b-4*c;return mc(`Find D for x² ${b<0?'−':'+'} ${Math.abs(b)}x ${c<0?'−':'+'} ${Math.abs(c)} = 0`,pm(D),[b*b+4*c,b*b-2*c,-D,b*b+c].map(pm),'D = b² − 4ac.',`Here a = 1, b = ${pm(b)} and c = ${pm(c)}.`,`D = ${b*b} − 4(${pp(c)}) = ${pm(D)}.`)},
+'1.6|Consecutive numbers':()=>{const n=ri(3,40),T=2*n+1;return mc(`Two consecutive numbers add up to ${T}. What is the smaller one?`,n,[n+1,n-1,n+2],'Call them n and n + 1.',`n + (n + 1) = ${T}, so 2n + 1 = ${T}.`,`2n = ${T-1}, so n = ${n}.`)},
+'1.6|Twice':()=>{const k=rp([2,3]),x=ri(2,15),b=ri(1,9);return mc(`${k==2?'Twice':'Three times'} a number plus ${b} equals ${k*x+b}. Find the number.`,x,[k*x,x+1,x-1,x+b],`Write the equation: ${k}x + ${b} = ${k*x+b}.`,`Subtract ${b}: ${k}x = ${k*x}.`,`Divide by ${k}: x = ${x}.`)},
+'1.7|Linear inequalities':()=>{if(Math.random()<.5){const x0=ri(1,8),a=ri(2,6),b=ri(1,9),c=a*x0-b;return mc(`Solve ${a}x − ${b} ≤ ${pm(c)}`,`x ≤ ${x0}`,[`x ≥ ${x0}`,`x ≤ ${x0+1}`,`x ≤ ${x0-1}`],'Solve it like an equation.',`Add ${b}: ${a}x ≤ ${a*x0}.`,`Divide by ${a}: x ≤ ${x0}.`)}
+ const k=ri(2,9),a=ri(2,5);return mc(`Solve −${a}x < ${a*k}`,`x > −${k}`,[`x < −${k}`,`x > ${k}`,`x < ${k}`],'Dividing by a negative number flips the sign.',`Divide both sides by −${a}.`,`The sign flips: x > −${k}.`)},
+'1.7|Compound inequalities':()=>{const p=ri(-5,3),e=p+ri(3,6),st=Math.random()<.5,v=ri(st?p+1:p,e);return mc(`Which value satisfies ${pm(p)} ${st?'<':'≤'} x ≤ ${pm(e)}?`,pm(v),[pm(p-1),pm(e+1),st?pm(p):pm(e+2),pm(p-2)],'x must be between the two numbers.',st?`${pm(p)} is not included because the sign is <.`:'Both ends are included because of ≤.',`${pm(v)} fits between ${pm(p)} and ${pm(e)}.`)},
+'1.8|Midpoint':()=>{const x1=ri(-6,6),y1=ri(-6,6),x2=x1+2*ri(1,3)*sg(),y2=y1+2*ri(1,3)*sg(),mx=(x1+x2)/2,my=(y1+y2)/2,P=(a,b)=>`(${pm(a)}, ${pm(b)})`;return mc(`Midpoint of ${P(x1,y1)} and ${P(x2,y2)}?`,P(mx,my),[P(x1+x2,y1+y2),P(my,mx),P(mx+1,my),P(mx,my+1)],'Average the x values and the y values.',`(${pm(x1)} + ${pp(x2)})/2 and (${pm(y1)} + ${pp(y2)})/2`,`The midpoint is ${P(mx,my)}.`)},
+'1.8|Quadrants':()=>{const x=ri(1,9)*sg(),y=ri(1,9)*sg(),qd=x>0?(y>0?'I':'IV'):(y>0?'II':'III');return mc(`In which quadrant is (${pm(x)}, ${pm(y)})?`,qd,['I','II','III','IV'].filter(z=>z!=qd),`Look at the signs: x is ${x>0?'positive':'negative'} and y is ${y>0?'positive':'negative'}.`,'Quadrant I is (+, +), II is (−, +), III is (−, −), IV is (+, −).',`The signs (${x>0?'+':'−'}, ${y>0?'+':'−'}) match quadrant ${qd}.`)},
+'1.8|Distance':()=>{const T=rp([[3,4,5],[5,12,13],[8,15,17],[6,8,10]]),x1=ri(-4,4),y1=ri(-4,4),x2=x1+sg()*T[0],y2=y1+sg()*T[1];return mc(`Distance between (${pm(x1)}, ${pm(y1)}) and (${pm(x2)}, ${pm(y2)})?`,T[2],[T[0]+T[1],T[0]**2+T[1]**2,T[2]+1,T[2]-1],'d = √(Δx² + Δy²).',`Δx = ${T[0]} and Δy = ${T[1]}.`,`d = √(${T[0]**2} + ${T[1]**2}) = √${T[2]**2} = ${T[2]}.`)},
+'1.10|Slope':()=>{const m=ri(2,9)*sg(),b=ri(1,9)*sg();return mc(`What is the slope of y = ${m<0?'−':''}${Math.abs(m)}x ${b<0?'−':'+'} ${Math.abs(b)}?`,pm(m),[-m,b,m+1,m-1].map(pm),'In y = mx + b, m is the slope.','Read the number multiplying x.',`The slope is ${pm(m)}.`)},
+'1.10|Slope formula':()=>{const m=rp([2,3,4,5,-2,-3,-4]),dx=ri(1,4),x1=ri(-4,4),y1=ri(-5,5),x2=x1+dx,y2=y1+m*dx;return mc(`Slope through (${pm(x1)}, ${pm(y1)}) and (${pm(x2)}, ${pm(y2)})?`,pm(m),[pm(-m),'1/'+Math.abs(m),pm(m+1),pm(dx)],'m = Δy / Δx.',`(${pm(y2)} − ${pp(y1)}) / (${pm(x2)} − ${pp(x1)})`,`${pm(m*dx)}/${dx} = ${pm(m)}.`)},
+'1.10|Undefined slope':()=>{const k=ri(2,9);return Math.random()<.5?mc(`What is the slope of the vertical line x = ${k}?`,'undefined',['0','1',String(k)],'Both points have the same x, so Δx = 0.','You cannot divide by 0.','The slope is undefined.'):mc(`What is the slope of the horizontal line y = ${k}?`,'0',['undefined','1',String(k)],'Both points have the same y, so Δy = 0.','0 divided by a number is 0.','The slope is 0.')}
+};
+const fresh=i=>{const g=GQ[Q[i][0]+'|'+Q[i][1]];if(g)Q[i]=[Q[i][0],Q[i][1],...g()]};
 const KEYS=[...'789−⌫456/,123=C0x²()'];
 $('#kb').innerHTML=`<div class="keys">${KEYS.map(k=>`<button class="k" onclick="kp('${k}')">${k}</button>`).join('')}<button class="k w" onclick="$('#kb').classList.remove('show')">OK</button></div>`;
 function kp(k){ans=k=='⌫'?ans.slice(0,-1):k=='C'?'':ans+k;$('#ans').textContent=ans||'…'}
